@@ -1,7 +1,7 @@
 export const currencyFormat = (value: number) =>
-  value?.toLocaleString('pt-br', {
+  value?.toLocaleString('en-US', {
     style: 'currency',
-    currency: 'BRL',
+    currency: 'USD',
   });
 
 export function mascaraMoeda(event: any) {
