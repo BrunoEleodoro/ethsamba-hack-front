@@ -1,39 +1,61 @@
 import * as React from 'react';
 import { useIsConnected } from '../hooks/useIsConnected';
+import { useFuel } from '../hooks/useFuel';
+import { TokenContractAbi__factory } from '../types';
+import { BigNumberish } from 'ethers';
+import { Address, Bech32Address } from 'fuels';
 
 const CompanyScreen: React.FC = () => {
   const [count, setCount] = React.useState(0);
   const [myAddress, setMyAddress] = React.useState('');
-  const [fuel, setFuel] = React.useState();
+  const [funcionario, setFuncionario] = React.useState('');
+  const [salario, setSalario] = React.useState(0);
+  const [fuel, ,] = useFuel();
+
   const [isConnected] = useIsConnected();
   const [assets, setAssets] = React.useState([]);
 
   const contractAddress =
     '0xa3cff3de3cf287c31854645a7c842598d992432ee24acc66d48fd9b011e8f85d';
-  // const currentAccount = fuel.currentAccount();
-  // Fuel loaded handler
-  const onFuelLoaded = () => {
-    setFuel((window as any).fuel);
-  };
 
-  // If fuel is already loaded, call the handler
-  React.useEffect(() => {
-    if ((window as any).fuel) {
-      onFuelLoaded();
-    }
-  }, []);
+  // https://s3.amazonaws.com/ebuploads2/uploads/1570210093993-brlc_512_512.png
 
-  React.useEffect(() => {
-    async function fetchAccount() {
-      if (fuel) {
-        const currentAccount = await fuel.currentAccount();
-        setMyAddress(currentAccount);
-        const assets = await window.fuel.assets();
-        setAssets(assets);
-      }
-    }
-    fetchAccount();
-  }, [fuel]);
+  async function sendTransaction() {
+    // myAddress
+    const myAddress = await fuel.currentAccount();
+    const b256Address = Address.fromString(myAddress).toB256();
+    const funcionarioB256 = Address.fromString(funcionario).toB256();
+    const wallet = await fuel.getWallet(b256Address);
+    //TODO: isLoading
+    TokenContractAbi__factory.connect(contractAddress, wallet)
+      .functions.mint({ value: funcionarioB256 }, salario)
+      .call();
+  }
+
+  //   // const currentAccount = fuel.currentAccount();
+  //   // Fuel loaded handler
+  //   const onFuelLoaded = () => {
+  //     setFuel((window as any).fuel);
+  //   };
+
+  //   // If fuel is already loaded, call the handler
+  //   React.useEffect(() => {
+  //     if ((window as any).fuel) {
+  //       onFuelLoaded();
+  //     }
+  //   }, []);
+
+  //   React.useEffect(() => {
+  //     async function fetchAccount() {
+  //       if (fuel) {
+  //         const currentAccount = await fuel.currentAccount();
+  //         setMyAddress(currentAccount);
+  //         const assets = await window.fuel.assets();
+  //         setAssets(assets);
+  //       }
+  //     }
+  //     fetchAccount();
+  //   }, [fuel]);
 
   return (
     <div className="bg-black min-h-screen p-[16px]">
@@ -84,6 +106,9 @@ const CompanyScreen: React.FC = () => {
                   <div className="text-1xl mt-2">
                     <input
                       type="number"
+                      onChange={(e) => {
+                        setSalario(Number(e.target.value));
+                      }}
                       //  input to type a number and the font size is big and the input style is transparent but there's a border on the bottom
                       className="text-2xl bg-transparent border-2 rounded-md border-gray-500 focus:outline-none focus:border-gray-500"
                     />
@@ -97,7 +122,10 @@ const CompanyScreen: React.FC = () => {
                   <div className="text-2xl">Carteira do funcionario</div>
                   <div className="text-1xl mt-2">
                     <input
-                      type="number"
+                      type="text"
+                      onChange={(e) => {
+                        setFuncionario(e.target.value);
+                      }}
                       //  input to type a number and the font size is big and the input style is transparent but there's a border on the bottom
                       className="text-2xl bg-transparent border-2 rounded-md border-gray-500 focus:outline-none focus:border-gray-500"
                     />
@@ -106,7 +134,12 @@ const CompanyScreen: React.FC = () => {
               </div>
             </div>
             <div className="w-full">
-              <button className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-8">
+              <button
+                className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-8"
+                onClick={() => {
+                  sendTransaction();
+                }}
+              >
                 ENVIAR
               </button>
             </div>

@@ -14,9 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": ["@fuel-wallet/sdk"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],
-  "types": ["@fuel-wallet/sdk"]
 }
