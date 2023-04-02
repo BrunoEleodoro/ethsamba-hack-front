@@ -2,9 +2,9 @@
 
 <table>
   <tr>
-    <td><img src="https://github.com/BrunoEleodoro/ethsamba-hack-contracts/docs/Screenshot 2023-04-02 at 08.49.45.png" width="100%"/></td>
-    <td><img src="docs/Screenshot 2023-04-02 at 08.49.55.png" width="100%"/></td>
-    <td><img src="docs/Screenshot 2023-04-02 at 08.50.08.png" width="100%"/></td>
+    <td><img src="https://raw.githubusercontent.com/BrunoEleodoro/ethsamba-hack-contracts/main/docs/Screenshot%202023-04-02%20at%2008.49.45.png" width="100%"/></td>
+    <td><img src="https://raw.githubusercontent.com/BrunoEleodoro/ethsamba-hack-contracts/main/docs/Screenshot%202023-04-02%20at%2008.49.55.png" width="100%"/></td>
+    <td><img src="https://raw.githubusercontent.com/BrunoEleodoro/ethsamba-hack-contracts/main/docs/Screenshot%202023-04-02%20at%2008.50.08.png" width="100%"/></td>
   </tr>
 </table>
 
