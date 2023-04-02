@@ -10,6 +10,8 @@ import {
   Link,
 } from 'react-router-dom';
 import CompanyScreen from './pages/CompanyScreen';
+import ReceiverComponent from './components/ReceiverComponent';
+import ReceiverValueComponent from './components/ReceiverValueComponent';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
   {
     path: 'company',
     element: <CompanyScreen />,
+  },
+  {
+    path: 'company/1',
+    element: <ReceiverComponent />,
+  },
+  {
+    path: 'company/2',
+    element: <ReceiverValueComponent />,
   },
   {
     path: 'about',
