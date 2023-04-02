@@ -36,7 +36,7 @@ const ReceiverComponent: React.FC = () => {
   }
 
   return (
-    <div className=" min-h-screen p-[16px]">
+    <div className="bg-[#2D2D2D] min-h-screen p-[16px] text-white">
       <div className="flex flex-col">
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl pl-3 flex items-center justify-center">

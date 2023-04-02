@@ -6,7 +6,7 @@ import { BigNumber, BigNumberish } from 'ethers';
 import { Address, Bech32Address } from 'fuels';
 import { mascaraMoeda } from '../utils/currency-format';
 
-const ReceiverValueComponent: React.FC = () => {
+const ReceiverReviewComponent: React.FC = () => {
   const [count, setCount] = React.useState(0);
   const [myAddress, setMyAddress] = React.useState('');
   const [funcionario, setFuncionario] = React.useState('');
@@ -37,7 +37,7 @@ const ReceiverValueComponent: React.FC = () => {
   }
 
   return (
-    <div className=" min-h-screen p-[16px]">
+    <div className="bg-[#2D2D2D] min-h-screen p-[16px] text-white">
       <div className="flex flex-col">
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl pl-3 flex items-center justify-center">
@@ -83,7 +83,7 @@ const ReceiverValueComponent: React.FC = () => {
         {/* content */}
         <div className="p-6">
           <div className="flex flex-row justify-between mt-10">
-            <div className="text-black font-bold">Valor a pagar</div>
+            <div className="text-black font-bold">Revisão</div>
           </div>
           {/* input borded  */}
           <div className="flex flex-row justify-between mt-5">
@@ -106,6 +106,7 @@ const ReceiverValueComponent: React.FC = () => {
                 type="text"
                 onInput={(e) => mascaraMoeda(e)}
                 defaultValue={'R$ 0,00'}
+                disabled
                 onChange={(e) => {
                   const value = e.target.value
                     .replace('.', '')
@@ -116,23 +117,27 @@ const ReceiverValueComponent: React.FC = () => {
               />
             </div>
           </div>
-          {/* divider */}
-          <div className="h-[2px] my-5 bg-black w-full border-gray-300 mt-4"></div>
           <div className="text-center w-full">
             Pagar para <br />
             <b>Funcionario</b>
           </div>
+          {/* divider */}
+          <div className="h-[2px] my-5 bg-black w-full border-gray-300 mt-4"></div>
           <br />
-          {/* warning message */}
+          <b>Quem vai receber</b>
+          <br />
           <div className="flex flex-row justify-between mt-5">
-            <div className="w-full border-0 focus:border-0 text-center bg-[#F2EB38] text-1xl rounded-lg p-5">
-              Faça seu pagamento com segurança. Cuidado com o os dados que foram
-              postos anteriormnete.
-            </div>
+            <div className="text-gray-500">Nome</div>
+            <div className="text-right">Funcionario</div>
           </div>
+          <div className="flex flex-row justify-between mt-2">
+            <div className="text-gray-500">Nº da carteira</div>
+            <div>0xee...3f039f3189633e4c8</div>
+          </div>
+          <br />
           {/* continuar big button rounded */}
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-5">
-            Continuar
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-10">
+            CONFIRMAR
           </button>
         </div>
       </div>
@@ -140,4 +145,4 @@ const ReceiverValueComponent: React.FC = () => {
   );
 };
 
-export default ReceiverValueComponent;
+export default ReceiverReviewComponent;

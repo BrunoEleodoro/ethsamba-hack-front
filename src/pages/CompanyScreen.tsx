@@ -37,7 +37,7 @@ const CompanyScreen: React.FC = () => {
   }
 
   return (
-    <div className=" min-h-screen p-[16px]">
+    <div className="bg-[#2D2D2D] min-h-screen p-[16px] text-white">
       <ReceiverComponent />
     </div>
   );
