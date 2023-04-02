@@ -14,6 +14,7 @@ import ReceiverComponent from './components/ReceiverComponent';
 import ReceiverValueComponent from './components/ReceiverValueComponent';
 import ReceiverReviewComponent from './components/ReceiverReviewComponent';
 import SuccessComponent from './components/SuccessComponent';
+import HistoryComponent from './components/HistoryComponent';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: 'company/3',
     element: <ReceiverReviewComponent />,
+  },
+  {
+    path: 'extrato',
+    element: <HistoryComponent />,
   },
   {
     path: 'about',

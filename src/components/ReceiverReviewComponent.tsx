@@ -5,6 +5,7 @@ import { TokenContractAbi__factory } from '../types';
 import { BigNumber, BigNumberish } from 'ethers';
 import { Address, Bech32Address } from 'fuels';
 import { mascaraMoeda } from '../utils/currency-format';
+import { useNavigate } from 'react-router-dom';
 
 const ReceiverReviewComponent: React.FC = () => {
   const [count, setCount] = React.useState(0);
@@ -12,6 +13,7 @@ const ReceiverReviewComponent: React.FC = () => {
   const [funcionario, setFuncionario] = React.useState('');
   const [salario, setSalario] = React.useState(0);
   const [fuel, ,] = useFuel();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [isConnected] = useIsConnected();
   const [assets, setAssets] = React.useState([]);
@@ -20,20 +22,22 @@ const ReceiverReviewComponent: React.FC = () => {
     '0xa3cff3de3cf287c31854645a7c842598d992432ee24acc66d48fd9b011e8f85d';
 
   // https://s3.amazonaws.com/ebuploads2/uploads/1570210093993-brlc_512_512.png
-
+  const navigate = useNavigate();
   async function sendTransaction() {
     // myAddress
     const myAddress = await fuel.currentAccount();
     const b256Address = Address.fromString(myAddress).toB256();
     const funcionarioB256 = Address.fromString(funcionario).toB256();
     const wallet = await fuel.getWallet(b256Address);
-    //TODO: isLoading
-    TokenContractAbi__factory.connect(contractAddress, wallet)
+    setIsLoading(true);
+    await TokenContractAbi__factory.connect(contractAddress, wallet)
       .functions.mint(
         { value: funcionarioB256 },
         BigNumber.from(salario).toHexString()
       )
       .call();
+    setIsLoading(false);
+    navigate('/success');
   }
 
   return (
@@ -46,6 +50,7 @@ const ReceiverReviewComponent: React.FC = () => {
               className="w-12 h-12 rounded-full mt-3"
             />
           </div>
+
           <div className="text-white">
             {isConnected ? (
               <>
@@ -82,14 +87,14 @@ const ReceiverReviewComponent: React.FC = () => {
 
         {/* content */}
         <div className="p-6">
-          <div className="flex flex-row justify-between mt-10">
-            <div className="text-black font-bold">Revisão</div>
+          <div className="flex flex-row justify-between mt-10 w-full text-center ">
+            <div className="text-white w-full font-bold">Transferir</div>
           </div>
           {/* input borded  */}
           <div className="flex flex-row justify-between mt-5">
-            <div className="flex flex-row justify-between w-full border-2 rounded-lg p-2">
+            <div className="flex flex-row justify-between w-full rounded-lg p-2">
               <div>Saldo em conta</div>
-              <div className="text-right">R$500.000,00</div>
+              <div className="text-right">FUSDC500.000,00</div>
               {/* <input
                 className="w-full border-2 border-gray-300 p-2 rounded-lg"
                 type="text"
@@ -102,42 +107,75 @@ const ReceiverReviewComponent: React.FC = () => {
           <div className="flex flex-row justify-between mt-5">
             <div className="flex flex-row justify-between w-full">
               <input
-                className="w-full border-0 focus:border-0 p-2 text-center text-blue-700 text-3xl"
+                className="w-full border-0 focus:border-0 p-2 text-center bg-transparent text-[#FFE500] text-3xl"
                 type="text"
                 onInput={(e) => mascaraMoeda(e)}
-                defaultValue={'R$ 0,00'}
-                disabled
+                defaultValue={'FUSDC 0,00'}
                 onChange={(e) => {
                   const value = e.target.value
                     .replace('.', '')
                     .replace(',', '.')
                     .replace(/[^0-9.-]+/, '');
-                  //   setTroco(parseFloat(value));
+                  setSalario(parseFloat(value));
                 }}
               />
             </div>
           </div>
-          <div className="text-center w-full">
-            Pagar para <br />
-            <b>Funcionario</b>
-          </div>
           {/* divider */}
-          <div className="h-[2px] my-5 bg-black w-full border-gray-300 mt-4"></div>
-          <br />
-          <b>Quem vai receber</b>
-          <br />
+          <div className="h-[2px] my-5 bg-white w-full border-gray-300 mt-4"></div>
+
+          <div className="flex flex-row justify-between mt-10">
+            <div className="text-white font-bold">Chave do recebedor</div>
+            <div className="text-[#FFE500]">Colar chave</div>
+          </div>
+
+          {/* input borded  */}
           <div className="flex flex-row justify-between mt-5">
-            <div className="text-gray-500">Nome</div>
-            <div className="text-right">Funcionario</div>
+            <div className="flex flex-row justify-between w-full">
+              <input
+                className="w-full border-2 border-gray-300 text-black p-2 rounded-lg"
+                type="text"
+                onChange={(e) => {
+                  setFuncionario(e.target.value);
+                }}
+              />
+            </div>
           </div>
-          <div className="flex flex-row justify-between mt-2">
-            <div className="text-gray-500">Nº da carteira</div>
-            <div>0xee...3f039f3189633e4c8</div>
-          </div>
+
           <br />
           {/* continuar big button rounded */}
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-10">
-            CONFIRMAR
+          {isLoading ? (
+            // loading spinner icon spinning
+            <div className="flex justify-center">
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v1a7 7 0 00-7 7h1zm3.293 5.707a1 1 0 001.414 0L12 13.414l2.293 2.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 000 1.414z"
+                ></path>
+              </svg>
+            </div>
+          ) : null}
+          <button
+            className="bg-[#FFE500] hover:bg-[#FFE700]  text-black font-bold py-2 px-4 rounded-full w-full mt-10"
+            onClick={() => {
+              sendTransaction();
+            }}
+          >
+            DEPOSITAR
           </button>
         </div>
       </div>

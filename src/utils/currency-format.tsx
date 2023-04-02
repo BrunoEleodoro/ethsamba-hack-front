@@ -14,7 +14,7 @@ export function mascaraMoeda(event: any) {
   event.target.value = maskCurrency(digitsFloat);
 }
 
-function maskCurrency(valor: any, locale = 'pt-BR', currency = 'BRL') {
+function maskCurrency(valor: any, locale = 'en-US', currency = 'USD') {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,

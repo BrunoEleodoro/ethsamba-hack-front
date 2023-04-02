@@ -128,7 +128,7 @@ const CompanyScreen: React.FC = () => {
             <div className="w-full rounded-md bg-gray-800 p-4">
               <div className="flex flex-row justify-center w-full">
                 <div className="flex flex-row w-full  justify-between items-center">
-                  <div className="text-2xl">Salario em fBRL</div>
+                  <div className="text-2xl">Salario em fUSDC</div>
                   <div className="text-1xl mt-2">
                     <input
                       type="number"

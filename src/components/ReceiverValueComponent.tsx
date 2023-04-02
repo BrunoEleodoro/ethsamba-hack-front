@@ -5,6 +5,7 @@ import { TokenContractAbi__factory } from '../types';
 import { BigNumber, BigNumberish } from 'ethers';
 import { Address, Bech32Address } from 'fuels';
 import { mascaraMoeda } from '../utils/currency-format';
+import { useNavigate } from 'react-router-dom';
 
 const ReceiverValueComponent: React.FC = () => {
   const [count, setCount] = React.useState(0);
@@ -35,7 +36,7 @@ const ReceiverValueComponent: React.FC = () => {
       )
       .call();
   }
-
+  const navigate = useNavigate();
   return (
     <div className="bg-[#2D2D2D] min-h-screen p-[16px] text-white">
       <div className="flex flex-col">
@@ -82,58 +83,105 @@ const ReceiverValueComponent: React.FC = () => {
 
         {/* content */}
         <div className="p-6">
-          <div className="flex flex-row justify-between mt-10">
-            <div className="text-black font-bold">Valor a pagar</div>
+          {/* Formas de pagamento */}
+          <div className="flex flex-col justify-center mt-10 text-center">
+            <div>Saldo</div>
+            <div className="text-2xl">FUSDC******</div>
           </div>
-          {/* input borded  */}
-          <div className="flex flex-row justify-between mt-5">
-            <div className="flex flex-row justify-between w-full border-2 rounded-lg p-2">
-              <div>Saldo em conta</div>
-              <div className="text-right">R$500.000,00</div>
-              {/* <input
-                className="w-full border-2 border-gray-300 p-2 rounded-lg"
-                type="text"
-                value="Saldo em conta"
-                disabled
-              /> */}
-            </div>
-          </div>
-          {/* input borded  */}
-          <div className="flex flex-row justify-between mt-5">
-            <div className="flex flex-row justify-between w-full">
-              <input
-                className="w-full border-0 focus:border-0 p-2 text-center text-blue-700 text-3xl"
-                type="text"
-                onInput={(e) => mascaraMoeda(e)}
-                defaultValue={'R$ 0,00'}
-                onChange={(e) => {
-                  const value = e.target.value
-                    .replace('.', '')
-                    .replace(',', '.')
-                    .replace(/[^0-9.-]+/, '');
-                  //   setTroco(parseFloat(value));
-                }}
+
+          <div className="w-full flex flex-row justify-center gap-2 items-center mb-5 mt-5">
+            <div className="rounded-md w-[130px] h-[130px] border-2 flex flex-col justify-center items-center">
+              {/* qrcode svg icon */}
+              <img
+                src="data:image/png;base64,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"
+                className="w-10 h-10 text-[#FFE500]"
               />
+              <div className="text-center mt-4 font-thin">QRCode</div>
             </div>
-          </div>
-          {/* divider */}
-          <div className="h-[2px] my-5 bg-black w-full border-gray-300 mt-4"></div>
-          <div className="text-center w-full">
-            Pagar para <br />
-            <b>Funcionario</b>
+
+            <div
+              className="rounded-md w-[130px] h-[130px] border-2 flex flex-col justify-center items-center cursor-pointer"
+              onClick={() => {
+                navigate('/company/3');
+              }}
+            >
+              {/* qrcode svg icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10  "
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H2zm0 2h12v12H2V4zm4 2a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H7a1 1 0 01-1-1V6z"
+                  clipRule="evenodd"
+                />
+              </svg>
+
+              <div className="text-center mt-4 font-thin">
+                Código cliente copia e cola
+              </div>
+            </div>
           </div>
           <br />
-          {/* warning message */}
-          <div className="flex flex-row justify-between mt-5">
-            <div className="w-full border-0 focus:border-0 text-center bg-[#F2EB38] text-1xl rounded-lg p-5">
-              Faça seu pagamento com segurança. Cuidado com o os dados que foram
-              postos anteriormnete.
+          <div className="w-full flex flex-row justify-between">
+            <div>
+              <b>Favoritos</b>
+            </div>
+            <div className="text-[#FFE500]">Ver todos</div>
+          </div>
+          {/* Lista */}
+          <div className="flex flex-col mt-10">
+            <div className="flex flex-row justify-between p-4 border-2 rounded-md">
+              <div className="flex flex-col">
+                <div>Matheus Fonseca e Lima</div>
+                <div>0xeee2766...f3189633e4c8</div>
+                <div>Chave para transferencia</div>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                {/* circle button with the icon forward svg */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-10 w-10 text-black bg-[#FFE500] p-2 rounded-lg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className="flex flex-row justify-between mt-6 p-4 border-2 rounded-md">
+              <div className="flex flex-col">
+                <div>Matheus Fonseca e Lima</div>
+                <div>0xeee2766...f3189633e4c8</div>
+                <div>Chave para transferencia</div>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                {/* circle button with the icon forward svg */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-10 w-10 text-black bg-[#FFE500] p-2 rounded-lg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
-          {/* continuar big button rounded */}
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-5">
-            Continuar
-          </button>
         </div>
       </div>
     </div>
